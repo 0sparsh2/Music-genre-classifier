@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Genre Jaanle</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+</head>
+
+<body>
+
+
+ <div class="login" >
+   <div id="head" style="font-family: Allerta Stencil, Sans-serif;">
+    <h1 style="font-size:6rem;">Genre Detection</h1>
+   </div>
+	
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post" enctype="multipart/form-data">
+    	<input type="file" name="file" placeholder="Audio" required="required" accept=".wav"/>
+        <!--input type="text" name="sales in first month" placeholder="sales in first month" required="required" />
+		<input type="text" name="sales in second month" placeholder="sales in second month" required="required" /-->
+        <button type="submit" class="btn btn-primary btn-block btn-large">Click to Predict genre of given audio</button>
+    </form>
+
+   <br>
+   <br>
+   <div style="transform: scale(2); color: white;"><em>
+   {{ prediction_text }}
+    </em></div>
+ </div>
+</body>
+</html>
