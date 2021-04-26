@@ -2,19 +2,18 @@
 
 Implementing different machine learning models on input music data and finding the most efficient method.
 
-We have compared KNN and other ensemble features on GTZAN [Dataset](https://www.kaggle.com/andradaolteanu/gtzan-dataset-music-genre-classification)\
-\
+We have compared KNN and other ensemble features on GTZAN [Dataset](https://www.kaggle.com/andradaolteanu/gtzan-dataset-music-genre-classification)
 
-*model.py\
+*model.py
 
 We Scale our features using scaler()\
 Training of model on logisitic regression\
 We select main 30 audio features out of the given 55 using feature permutance\
 We now train those models on various\
 Hyperparameter tuning is performed\
-Those trained weights are saved in pickle files\
+Those trained weights are saved in pickle files
 
-*app.py\
+*app.py
 
 Flask is imported\
 The program extracts input from user in index.html\
@@ -24,9 +23,9 @@ Refer the [official librosa docs](https://librosa.org/doc/latest/feature.html) f
 We load the pickle files of trained models and run on the data\
 The input is splitted into 10 intervals of 3 seconds out of 30 seconds audio as to compare to the dataset where similar has been done\
 It is broken to create a much bigger dataset from much lesser data\
-We test the data input data and send the results back to index.html\
+We test the data input data and send the results back to index.html
 
-*index.html\
+*index.html
 
 Front-end for the project which extracts the audio file for user\
 plays it\
