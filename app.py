@@ -58,9 +58,14 @@ def predict():
             #    #(sr , data) = read(file)
             ###was read(file)
             
-            audio_data, sr = librosa.load(file, offset=0, duration=3)
-            print(type(file), file)
+            
+
+            audio_data, sr = librosa.load(file) #, offset=0, duration=30)
             audio_data, _ = librosa.effects.trim(audio_data)
+            audio_data = audio_data[:661500]
+            collection = np.split(audio_data,10)
+
+            audio_data = collection[0]
             
             d = librosa.feature.mfcc(np.array(audio_data).flatten(),sr=22050 , n_mfcc = 20) #36565
             d_var = d.var(axis=1).tolist()
@@ -203,16 +208,16 @@ def predict():
                 #(sr , data) = read(file)
             
             
-            val=3
-            while(val<=27):
+            val=1
+            while(val<=9):
             #while file and allowed_file(file.filename):# and val<=27:
                 #try:
-                #audio_data, sr = librosa.load(file, offset=val, duration=val+3)
+                #audio_data, sr = librosa.load(file, offset=val, duration=3)
                 #print(audio_data)
                 #audio_data, _ = librosa.effects.trim(audio_data)
                 #except:
                 #    print(val)
-
+                audio_data = collection[val]
                 #with open(r'/Users/Anil/mpr/Data'+filename , 'rb') as file:
                 #(sr , data) = read(file)
                 #audio_data, sr = librosa.load(read(file), offset=val, duration=val+3)
@@ -351,7 +356,7 @@ def predict():
                 shorter_testing_frame2 = testing_frame2[perm_features[:30]]
                 df_test = pd.concat([shorter_testing_frame, shorter_testing_frame2])
                 shorter_testing_frame = df_test
-                val+=3
+                val+=1
 
                     
         
@@ -365,7 +370,7 @@ def predict():
 
             #Testing Input Data
             from collections import Counter
-            result_list=[]
+            result=[]
             models = {'Catboost':cbc, 'XGBoost':xgbc, 'Gradient Boosting':gbc, 'AdaBoost':abc, 'Random Forest':rfc, 'Linear Regression':lr, 'KNN':cls}
             key_list = list(models.keys())
             val_list = list(models.values())
@@ -373,36 +378,41 @@ def predict():
 
             for model in models.values():
                 position = val_list.index(model)
-            for i in range(10):
-                test = model.predict(df_test[i:(i+1)])
-                result_list.append(test)
-            t = max(result_list, key = result_list.count)
 
+                for i in range(10):
+                    test = model.predict(df_test[i:(i+1)])
+                    result.append(test)
+                t = max(result, key = result.count)
+
+                
+                if t== [[0]] or t ==[['blues']]:
+                    genre_detected = 'blues'
+                elif t== [[1]] or t==[['pop']]:
+                    genre_detected = 'pop'
+                elif t== [[2]] or t==[['jazz']]:
+                    genre_detected = 'jazz'
+                elif t== [[3]] or t==[['reggae']]:
+                    genre_detected = 'reggae'
+                elif t== [[4]] or t==[['metal']]:
+                    genre_detected = 'metal'
+                elif t== [[5]] or t==[['disco']]:
+                    genre_detected = 'disco'
+                elif t== [[6]] or t==[['classical']]:
+                    genre_detected = 'classical'
+                elif t== [[7]] or t==[['hiphop']]:
+                    genre_detected = 'hiphop'
+                elif t== [[8]] or t==[['rock']]:
+                    genre_detected = 'rock'
+                else:
+                    genre_detected = 'country'
+
+                result.append(genre_detected)
             
-            if t== [[0]] or t ==[['blues']]:
-                genre_detected = 'blues'
-            elif t== [[1]] or t==[['pop']]:
-                genre_detected = 'pop'
-            elif t== [[2]] or t==[['jazz']]:
-                genre_detected = 'jazz'
-            elif t== [[3]] or t==[['reggae']]:
-                genre_detected = 'reggae'
-            elif t== [[4]] or t==[['metal']]:
-                genre_detected = 'metal'
-            elif t== [[5]] or t==[['disco']]:
-                genre_detected = 'disco'
-            elif t== [[6]] or t==[['classical']]:
-                genre_detected = 'classical'
-            elif t== [[7]] or t==[['hiphop']]:
-                genre_detected = 'hiphop'
-            elif t== [[8]] or t==[['rock']]:
-                genre_detected = 'rock'
-            else:
-                genre_detected = 'country'
+            result = result[:7]
             #return genre_detected
 
 
-    return render_template('index.html', prediction_text='Genre should be {}'.format(genre_detected))
+    return render_template('index.html' , prediction_text = result, algos = key_list )   #, prediction_text_cbc='Genre should be {} for CatBoost {} for XGBoost, {} for Gradient Boosting, {} for AdaBoost, {} for Random Forest, {} for Logistic Regress, {} for K-Nearest Neighbours'.format(result[0][0][0], result[1][0][0], result[2][0][0], result[3][0][0], result[4][0][0], result[5][0][0], result[6][0][0])) #, prediction_text_xgbc='Genre should be {}'.format(result[1]), prediction_text_gbc='Genre should be {}'.format(result[2]),prediction_text_abc='Genre should be {}'.format(result[3]),prediction_text_rfc='Genre should be {}'.format(result[4]),,prediction_text_lr='Genre should be {}'.format(result[5]),prediction_text_cls='Genre should be {}'.format(result[6]))
 
 '''def predict():
 
