@@ -9,7 +9,8 @@
 <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -23,17 +24,51 @@
 
      <!-- Main Input For Receiving Query to our ML -->
     <form action="{{ url_for('predict')}}"method="post" enctype="multipart/form-data">
-    	<input type="file" name="file" placeholder="Audio" required="required" accept=".wav"/>
+    	<input type="file" name="file" placeholder="Audio" required="required" accept=".wav" id = "upload"/>
+      <audio id="audio" controls>
+        <source src="" id="src" />
+      </audio>
         <!--input type="text" name="sales in first month" placeholder="sales in first month" required="required" />
 		<input type="text" name="sales in second month" placeholder="sales in second month" required="required" /-->
-        <button type="submit" class="btn btn-primary btn-block btn-large">Click to Predict genre of given audio</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large" >Click to Predict genre of given audio</button>
     </form>
 
+  
    <br>
-   <br>
-   <div style="transform: scale(2); color: white;"><em>
-   {{ prediction_text }}
+   <div style="transform: scale(1); color: white; ;"><em>
+    <table style=" transform: translate(-30%,20%)" id="table">
+    <tr>
+    {% for value in algos %}
+    
+      <th style="padding: 20px; border: 1px solid white;">
+        {{ value}}
+      </th>
+    
+        {% endfor %}
+    </tr>
+      
+    <tr>
+      {% for value in prediction_text %}
+      <th style="padding:20px; border: 1px solid white;">
+        {{ value[0][0] }}
+      </th>
+          {% endfor %}
+    </tr>
+  </table>
+ 
+   
     </em></div>
+
+
  </div>
 </body>
+<script>
+function handleFiles(event) {
+  var files = event.target.files;
+  $("#src").attr("src", URL.createObjectURL(files[0]));
+  document.getElementById("audio").load();
+}
+
+document.getElementById("upload").addEventListener("change", handleFiles, false);
+</script>
 </html>
