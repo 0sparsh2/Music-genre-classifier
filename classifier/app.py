@@ -175,8 +175,8 @@ def predict():
                 mfcc_names.append(mfcc_str)
 
             
-            scaler = pickle.load(open('pickle/scalar.pkl', 'rb'))
-            X_train = pickle.load(open('pickle/xtrain.pkl', 'rb'))
+            scaler = pickle.load(open('classifier/pickle/scalar.pkl', 'rb'))
+            X_train = pickle.load(open('classifier/pickle/xtrain.pkl', 'rb'))
             perm_features = ['spectral_centroid_mean', 'spectral_bandwidth_mean', 'mfcc1_mean', 'rolloff_mean', 'zero_crossing_rate_mean', 'perceptr_var', 'mfcc3_mean', 'rms_mean', 'chroma_stft_mean', 'mfcc2_mean', 'mfcc4_mean', 'mfcc9_mean', 'spectral_centroid_var', 'mfcc6_mean', 'rms_var', 'mfcc17_mean', 'spectral_bandwidth_var', 'mfcc11_mean', 'zero_crossing_rate_var', 'mfcc7_mean', 'mfcc5_mean', 'mfcc8_mean', 'mfcc10_mean', 'mfcc12_mean', 'rolloff_var', 'mfcc13_mean', 'mfcc3_var', 'mfcc18_mean', 'mfcc5_var', 'chroma_stft_var']
             test_frame = pd.DataFrame([test_data], columns = mfcc_names)
             testing_frame = pd.DataFrame(scaler.transform(test_frame), columns=X_train.columns)
@@ -326,13 +326,13 @@ def predict():
 
                     
         
-            cbc = pickle.load(open('pickle/cbc.pkl', 'rb'))
-            xgbc = pickle.load(open('pickle/xgbc.pkl', 'rb'))
-            gbc = pickle.load(open('pickle/gbc.pkl', 'rb'))
-            abc = pickle.load(open('pickle/abc.pkl', 'rb'))
+            cbc = pickle.load(open('classifier/pickle/cbc.pkl', 'rb'))
+            xgbc = pickle.load(open('classifier/pickle/xgbc.pkl', 'rb'))
+            gbc = pickle.load(open('classifier/pickle/gbc.pkl', 'rb'))
+            abc = pickle.load(open('classifier/pickle/abc.pkl', 'rb'))
             #rfc = pickle.load(open('pickle/rfc.pkl', 'rb'))
-            lr = pickle.load(open('pickle/lr.pkl', 'rb'))
-            cls = pickle.load(open('pickle/cls.pkl', 'rb'))
+            lr = pickle.load(open('classifier/pickle/lr.pkl', 'rb'))
+            cls = pickle.load(open('classifier/pickle/cls.pkl', 'rb'))
 
             #Testing Input Data
             from collections import Counter
