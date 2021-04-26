@@ -7,18 +7,6 @@ import librosa
 import pandas as pd
 import sklearn.preprocessing as skp
 
-'''app = Flask(__name__)
-knn_model = pickle.load(open('knn.pkl', 'rb'))
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/predict',methods=['POST'])'''
-
-
-
-
 
 
 
@@ -49,17 +37,8 @@ def predict():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            #filename = secure_filename(file.filename)
-            #print(filename)
-            #file.save(os.path.join(app.config['UPLOAD_FILE'], filename))
-            #
-            #filename = '/'+filename
-            #with open(r'/Users/Anil/mpr/Data'+filename , 'rb') as file:
-            #    #(sr , data) = read(file)
-            ###was read(file)
-            
-            
 
+            
             audio_data, sr = librosa.load(file) #, offset=0, duration=30)
             audio_data, _ = librosa.effects.trim(audio_data)
             audio_data = audio_data[:661500]
@@ -196,32 +175,19 @@ def predict():
                 mfcc_names.append(mfcc_str)
 
             
-            scaler = pickle.load(open('scalar.pkl', 'rb'))
-            X_train = pickle.load(open('xtrain.pkl', 'rb'))
+            scaler = pickle.load(open('pickle/scalar.pkl', 'rb'))
+            X_train = pickle.load(open('pickle/xtrain.pkl', 'rb'))
             perm_features = ['spectral_centroid_mean', 'spectral_bandwidth_mean', 'mfcc1_mean', 'rolloff_mean', 'zero_crossing_rate_mean', 'perceptr_var', 'mfcc3_mean', 'rms_mean', 'chroma_stft_mean', 'mfcc2_mean', 'mfcc4_mean', 'mfcc9_mean', 'spectral_centroid_var', 'mfcc6_mean', 'rms_var', 'mfcc17_mean', 'spectral_bandwidth_var', 'mfcc11_mean', 'zero_crossing_rate_var', 'mfcc7_mean', 'mfcc5_mean', 'mfcc8_mean', 'mfcc10_mean', 'mfcc12_mean', 'rolloff_var', 'mfcc13_mean', 'mfcc3_var', 'mfcc18_mean', 'mfcc5_var', 'chroma_stft_var']
             test_frame = pd.DataFrame([test_data], columns = mfcc_names)
             testing_frame = pd.DataFrame(scaler.transform(test_frame), columns=X_train.columns)
             shorter_testing_frame = testing_frame[perm_features]
 
 
-            #with open(r'/Users/Anil/mpr/Data'+filename , 'rb') as file:
-                #(sr , data) = read(file)
-            
             
             val=1
             while(val<=9):
-            #while file and allowed_file(file.filename):# and val<=27:
-                #try:
-                #audio_data, sr = librosa.load(file, offset=val, duration=3)
-                #print(audio_data)
-                #audio_data, _ = librosa.effects.trim(audio_data)
-                #except:
-                #    print(val)
+
                 audio_data = collection[val]
-                #with open(r'/Users/Anil/mpr/Data'+filename , 'rb') as file:
-                #(sr , data) = read(file)
-                #audio_data, sr = librosa.load(read(file), offset=val, duration=val+3)
-                #audio_data, _ = librosa.effects.trim(audio_data)
                 d = librosa.feature.mfcc(np.array(audio_data).flatten(),sr=22050 , n_mfcc = 20) #36565
                 d_var = d.var(axis=1).tolist()
                 d_mean = d.mean(axis=1).tolist()
@@ -360,13 +326,13 @@ def predict():
 
                     
         
-            cbc = pickle.load(open('cbc.pkl', 'rb'))
-            xgbc = pickle.load(open('xgbc.pkl', 'rb'))
-            gbc = pickle.load(open('gbc.pkl', 'rb'))
-            abc = pickle.load(open('abc.pkl', 'rb'))
-            rfc = pickle.load(open('rfc.pkl', 'rb'))
-            lr = pickle.load(open('lr.pkl', 'rb'))
-            cls = pickle.load(open('cls.pkl', 'rb'))
+            cbc = pickle.load(open('pickle/cbc.pkl', 'rb'))
+            xgbc = pickle.load(open('pickle/xgbc.pkl', 'rb'))
+            gbc = pickle.load(open('pickle/gbc.pkl', 'rb'))
+            abc = pickle.load(open('pickle/abc.pkl', 'rb'))
+            rfc = pickle.load(open('pickle/rfc.pkl', 'rb'))
+            lr = pickle.load(open('pickle/lr.pkl', 'rb'))
+            cls = pickle.load(open('pickle/cls.pkl', 'rb'))
 
             #Testing Input Data
             from collections import Counter
@@ -414,26 +380,6 @@ def predict():
 
     return render_template('index.html' , prediction_text = result, algos = key_list )   #, prediction_text_cbc='Genre should be {} for CatBoost {} for XGBoost, {} for Gradient Boosting, {} for AdaBoost, {} for Random Forest, {} for Logistic Regress, {} for K-Nearest Neighbours'.format(result[0][0][0], result[1][0][0], result[2][0][0], result[3][0][0], result[4][0][0], result[5][0][0], result[6][0][0])) #, prediction_text_xgbc='Genre should be {}'.format(result[1]), prediction_text_gbc='Genre should be {}'.format(result[2]),prediction_text_abc='Genre should be {}'.format(result[3]),prediction_text_rfc='Genre should be {}'.format(result[4]),,prediction_text_lr='Genre should be {}'.format(result[5]),prediction_text_cls='Genre should be {}'.format(result[6]))
 
-'''def predict():
-
-    int_features = [int(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
-    prediction = model.predict(final_features)
-
-    output = round(prediction[0], 2)
-
-    return render_template('index.html', prediction_text='Genre should be $ {}'.format(output))'''
-
-
-
-'''@app.route('/results',methods=['POST'])
-def results():
-
-    data = request.get_json(force=True)
-    prediction = model.predict([np.array(list(data.values()))])
-
-    output = prediction[0]
-    return jsonify(output)'''
 
 if __name__ == "__main__":
     app.run(debug=True)
