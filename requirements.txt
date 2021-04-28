@@ -6,6 +6,6 @@ numpy==1.19.2
 pandas==1.2.3
 Werkzeug==1.0.1
 librosa==0.8.0
-catboost=0.25.1
+catboost==0.25.1
 
 
