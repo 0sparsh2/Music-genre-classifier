@@ -1,22 +1,22 @@
 
 import numpy as np
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import pickle
-from werkzeug.utils import secure_filename
 import librosa
 import pandas as pd
-import sklearn.preprocessing as skp
+import catboost as cb
+import xgboost as xgb
 
 
 
 
-UPLOAD_FILE = '/Users/Anil/mpr/'
-UPLOAD_FOLDER = '/Data/'
+#UPLOAD_FILE = '/Users/Anil/mpr/'
+#UPLOAD_FOLDER = '/Data/'
 ALLOWED_EXTENSIONS = set(['wav'])
 
 app = Flask(__name__)
 
-app.config['UPLOAD_FILE'] = UPLOAD_FILE
+#app.config['UPLOAD_FILE'] = UPLOAD_FILE
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -38,7 +38,6 @@ def predict():
         file = request.files['file']
         if file and allowed_file(file.filename):
 
-            
             audio_data, sr = librosa.load(file) #, offset=0, duration=30)
             audio_data, _ = librosa.effects.trim(audio_data)
             audio_data = audio_data[:661500]
@@ -327,7 +326,8 @@ def predict():
                     
         
             cbc = pickle.load(open('classifier/pickle/cbc.pkl', 'rb'))
-            xgbc = pickle.load(open('classifier/pickle/xgbc.pkl', 'rb'))
+            xgbc = pickle.load(open('classifier/pickle/cbc.pkl', 'rb'))
+            #change xgbc later
             gbc = pickle.load(open('classifier/pickle/gbc.pkl', 'rb'))
             abc = pickle.load(open('classifier/pickle/abc.pkl', 'rb'))
             #rfc = pickle.load(open('pickle/rfc.pkl', 'rb'))
@@ -335,7 +335,7 @@ def predict():
             cls = pickle.load(open('classifier/pickle/cls.pkl', 'rb'))
 
             #Testing Input Data
-            from collections import Counter
+            #from collections import Counter
             result=[]
             models = {'Catboost':cbc, 'XGBoost':xgbc, 'Gradient Boosting':gbc, 'AdaBoost':abc,  'Linear Regression':lr, 'KNN':cls} #'Random Forest':rfc,
             key_list = list(models.keys())
@@ -343,7 +343,7 @@ def predict():
 
 
             for model in models.values():
-                position = val_list.index(model)
+                #position = val_list.index(model)
 
                 for i in range(10):
                     test = model.predict(df_test[i:(i+1)])
@@ -378,8 +378,8 @@ def predict():
             #return genre_detected
 
 
-    return render_template('index.html' , prediction_text = result, algos = key_list )   #, prediction_text_cbc='Genre should be {} for CatBoost {} for XGBoost, {} for Gradient Boosting, {} for AdaBoost, {} for Random Forest, {} for Logistic Regress, {} for K-Nearest Neighbours'.format(result[0][0][0], result[1][0][0], result[2][0][0], result[3][0][0], result[4][0][0], result[5][0][0], result[6][0][0])) #, prediction_text_xgbc='Genre should be {}'.format(result[1]), prediction_text_gbc='Genre should be {}'.format(result[2]),prediction_text_abc='Genre should be {}'.format(result[3]),prediction_text_rfc='Genre should be {}'.format(result[4]),,prediction_text_lr='Genre should be {}'.format(result[5]),prediction_text_cls='Genre should be {}'.format(result[6]))
+    return render_template('index.html' , prediction_text = result, algos = key_list )  
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+  app.run(host='0.0.0.0',port=5000, debug=True)
