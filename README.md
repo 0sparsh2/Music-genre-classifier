@@ -31,7 +31,7 @@ Front-end for the project which extracts the audio file for user\
 plays it\
 Returns the recognized genre and model used along\
 
-You can find the hosted website here:
+You can find the hosted website here: [Click to View](https://music-genre-classifier.sparshnagpal.repl.co/)
 
 
 ![Input](https://github.com/0sparsh2/Music-genre-classifier/blob/main/input.png)
