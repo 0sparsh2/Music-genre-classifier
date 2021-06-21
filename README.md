@@ -32,7 +32,9 @@ plays it\
 Returns the recognized genre and model used along\
 
 You can find the hosted website here: [Click to View](https://music-genre-classifier.sparshnagpal.repl.co/)
-
+Check my published paper on this topic [Music Genre Classification Using Machine Learning Models](https://doi.org/10.22214/ijraset.2021.35381)
 
 ![Input](https://github.com/0sparsh2/Music-genre-classifier/blob/main/input.png)
 ![Output](https://github.com/0sparsh2/Music-genre-classifier/blob/main/output.png)
+
+
